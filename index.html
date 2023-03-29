@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number guess Game</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            background-color: burlywood;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+        }
+
+        main {
+           
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 15px;
+            background-color: aqua;
+            padding: 30px;
+            text-align: center;
+        }
+
+        img {
+            width: 70%;
+            max-height: 22rem;
+            height: auto;
+            margin: 10px 0;
+            border-radius: 15px;
+
+        }
+
+        .button-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+        }
+
+        button {
+            margin: 5px 0;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: rgb(0, 183, 255);
+            color: white;
+            border: 1px solid black;
+
+        }
+
+
+
+
+        #gameArea {
+           
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .gameStart {
+            margin: 10px 0;
+        }
+
+        #inputBox {
+            padding: 10px;
+            width: 100%;
+            background: transparent;
+            border: 1px solid gray;
+            border-radius: 5px;
+            outline: none;
+            margin-top: 10px;
+            margin-bottom: 30px;
+        }
+
+        .info {
+            margin-bottom: 15px;
+            text-align: start;
+        }
+
+        .info>p {
+            margin-top: 10px;
+            font-size: 15px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+        }
+
+        .info>span {
+            color: red;
+
+
+        }
+    </style>
+
+
+
+</head>
+
+<body onload="init()">
+    <main>
+        <div id="welcome-screen">
+            <h1>Number Guess Game</h1>
+            <img src="data:image/jpeg;base64,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"
+                alt="Logo">
+            <div class="Difficulty">
+                <h2>Select The Difficulty Level</h2>
+                <div class="button-wrap">
+                    <button onclick="Easymode()">Easy: 10 attempts</button>
+                    <button onclick="Hardmode()">Hard: 5 attempts</button>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="gameArea">
+            <div id="newgamebutton">
+                <button onclick="newGameBegin()">New Game</button>
+            </div>
+
+            <div class="gameStart">
+                <h1 id="guessHint">Your Guess</h1>
+                <input type="number" id="inputBox" min="1" max="100" placeholder="Enter Your Number"
+                    onchange="compareGuess()">
+
+            </div>
+
+
+            <div class="stats">
+                <div class="info">
+                    <p>Number of previous attempts</p>
+                    <span id="attempts"> 0 </span>
+                </div>
+                <div class="info">
+                    <p>Number of previous guesses</p>
+                    <span id="guesses"> 0 </span>
+                </div>
+            </div>
+
+        </div>
+
+
+    </main>
+
+
+
+
+
+    <script>
+
+
+        let computerGuess;
+        let userGuess = [];
+        let userGuessUpdate = document.getElementById("guessHint");
+        let userNumberUpdate = document.getElementById("inputBox");
+        let audio= new Audio("./gameSound.wav");
+
+        const init = () => {
+            computerGuess = Math.floor(Math.random() * 100);
+            console.log(computerGuess);
+
+            document.getElementById("gameArea").style.display = "none";
+            document.getElementById("newgamebutton").style.display = "none";
+
+        }
+        init();
+
+        const gameStart = () => {
+            document.getElementById("gameArea").style.display = "block";
+            document.getElementById("welcome-screen").style.display = "none";
+
+        }
+
+
+        const Easymode = () => {
+            audio.play();
+            maxGuess = 10;
+            gameStart();
+        }
+
+        const Hardmode = () => {
+            audio.play();
+            maxGuess = 5;
+            gameStart();
+        }
+
+
+        const compareGuess = () => {
+            audio.play();
+            const userNumber = document.getElementById("inputBox").value;
+            userGuess = [...userGuess, userNumber]
+            document.getElementById("guesses").innerHTML = userGuess;
+
+
+            if (userGuess.length < maxGuess) {
+                if (computerGuess < userNumber) {
+                    userGuessUpdate.innerHTML = "Your Guess Is High 😲";
+                    userNumberUpdate.value = "";
+                }
+                else if (computerGuess > userNumber) {
+                    userGuessUpdate.innerHTML = "Your Guess Is Low 😟";
+                    userNumberUpdate.value = "";
+
+                }
+                else {
+                    userGuessUpdate.innerHTML = "Correct Answer You Won 😀";
+                    userNumberUpdate.value = "";
+                    newGame();
+                }
+            }
+            else {
+                if (computerGuess < userNumber) {
+                    userGuessUpdate.innerHTML = `Sorry You Lost! Correct Answer is ${computerGuess}`;
+                    userNumberUpdate.value = "";
+                    newGame();
+                }
+                else if (computerGuess > userNumber) {
+                    userGuessUpdate.innerHTML = `Sorry You Lost! Correct Answer is ${computerGuess}`;
+                    userNumberUpdate.value = "";
+                    newGame();
+                }
+                else {
+                    userGuessUpdate.innerHTML = "Correct Answer You Won 😀";
+                    userNumberUpdate.value = "";
+                    newGame();
+                }
+            }
+
+
+
+
+            document.getElementById("attempts").innerHTML = userGuess.length;
+        }
+
+
+        const newGameBegin = () => {
+            window.location.reload();
+            audio.play();
+        }
+
+        const newGame = () => {
+            document.getElementById("newgamebutton").style.display = "block";
+            userNumberUpdate.style.display = "none";
+        }
+
+
+
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
